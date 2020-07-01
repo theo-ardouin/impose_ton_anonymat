@@ -13,3 +13,4 @@ clean:
 
 deploy: ## Requires root
 	cp infra/systemd/impose.service /etc/systemd/system/
+	systemctl enable impose.service
