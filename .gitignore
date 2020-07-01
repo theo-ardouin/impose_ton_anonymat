@@ -130,3 +130,5 @@ dmypy.json
 
 # Never push the configuration
 impose.json
+# Never push image configuration
+images.json
