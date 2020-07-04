@@ -18,7 +18,8 @@ class TaskHandler:
 
     def add(self, task: Task) -> None:
         self.session.tasks.add(task)
-        self.scheduler.remove(task.channel_id)
+        if self.scheduler.has(task.channel_id):
+            self.scheduler.remove(task.channel_id)
         self.scheduler.add(task)
         self.scheduler.reload()
         LOGGER.info(f"Register {task}")

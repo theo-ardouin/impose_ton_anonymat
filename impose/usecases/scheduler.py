@@ -17,6 +17,9 @@ class Scheduler:
     def add(self, task: Task) -> None:
         self.tasks[task.channel_id] = task
 
+    def has(self, channel_id: int) -> bool:
+        return channel_id in self.tasks
+
     def remove(self, channel_id: int) -> None:
         del self.tasks[channel_id]
 
