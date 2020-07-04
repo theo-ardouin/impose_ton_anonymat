@@ -130,3 +130,6 @@ dmypy.json
 
 # Never push the database
 database.db
+
+# Don't push API keys
+secrets
