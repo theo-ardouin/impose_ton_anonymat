@@ -9,6 +9,7 @@ Restart=always
 RestartSec=5
 User=debian
 WorkingDirectory=/home/debian/bots/impose_ton_anonymat
+EnvironmentFile=/home/debian/bots/impose_ton_anonymat/infra/secrets
 ExecStart=/home/debian/bots/impose_ton_anonymat/run.sh
 
 [Install]

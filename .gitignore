@@ -128,7 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Never push the configuration
-impose.json
-# Never push image configuration
-images.json
+# Never push the database
+database.db
+
+# Don't push API keys
+secrets
