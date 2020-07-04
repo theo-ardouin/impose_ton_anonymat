@@ -1,5 +1,0 @@
-{
-    "token": "<YOUR_DISCORD_TOKEN_HERE>",
-    "channel": <YOUR_CHANNEL_ID_HERE>,
-    "time_of_day": "<YOUR_TIME_OF_DAY_HERE_AS_MM:SS>"
-}

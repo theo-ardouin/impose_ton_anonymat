@@ -1,12 +1,13 @@
-SHELL			?= /bin/bash
+SHELL			= /bin/bash
 PYTHON_VERSION	?= python3.7
 
 .PHONY	= init clean deploy
 
-init:
-	virtualenv -p ${PYTHON_VERSION} venv && \
-		source venv/bin/activate && \
-		pip install -r requirements.txt
+init: venv
+	source venv/bin/activate && pip install -r requirements.txt
+
+venv:
+	virtualenv -p ${PYTHON_VERSION} venv
 
 clean:
 	rm -f impose.log
