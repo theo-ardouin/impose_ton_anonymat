@@ -5,3 +5,4 @@ class CommandType(Enum):
     start = "start"
     stop = "stop"
     image = "image"
+    permission = "perm"

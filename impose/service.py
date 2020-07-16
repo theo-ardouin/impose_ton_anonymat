@@ -10,6 +10,7 @@ from impose.usecases.command import (
     CommandStart,
     CommandStop,
     CommandContext,
+    CommandPermission,
 )
 
 
@@ -25,6 +26,7 @@ class Service:
             CommandType.image: CommandImage(ctxt),
             CommandType.start: CommandStart(ctxt),
             CommandType.stop: CommandStop(ctxt),
+            CommandType.permission: CommandPermission(ctxt),
         }
 
     @classmethod

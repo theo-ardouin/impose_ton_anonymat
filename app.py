@@ -43,10 +43,15 @@ async def on_message(message) -> None:
         permissions = session.permissions.get(message.author.id)
 
         if not command.permission in permissions:
-            await service.discord.send(message.channel.id, "You don't have this privilege...")
+            await service.discord.send(
+                message.channel.id, "You don't have this privilege..."
+            )
             return
 
-        await command.execute(message.author.id, message.channel.id, cmd.args)
+        try:
+            await command.execute(message.author.id, message.channel.id, cmd.args)
+        except Exception as err:
+            LOGGER.exception(err)
 
 
 async def execute_scheduled_tasks() -> None:
