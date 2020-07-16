@@ -17,6 +17,6 @@ def parse(message: str) -> Optional[Command]:
         if args[0] != "!impose":
             return None
         return Command(type=CommandType(args[1]), args=args[2:])
-    except ValueError:
+    except (ValueError, IndexError):
         LOGGER.warn("Invalid command: %s", message)
         return None

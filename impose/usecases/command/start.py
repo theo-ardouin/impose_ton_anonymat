@@ -9,6 +9,7 @@ class CommandStart(ICommand):
     def __init__(self, context: Context) -> None:
         self.context = context
 
+    @property
     def permission(self) -> Permission:
         return Permission.WRITE_SCHEDULE
 

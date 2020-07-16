@@ -36,6 +36,8 @@ async def on_message(message) -> None:
     if cmd is None or not cmd.type in service.commands:
         return
 
+    LOGGER.info("Trying to execute %s for %d", cmd, message.author.id)
+
     with service.db.create_session() as session:
         command = service.commands[cmd.type]
         permissions = session.permissions.get(message.author.id)

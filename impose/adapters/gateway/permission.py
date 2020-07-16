@@ -13,7 +13,7 @@ class PermissionGateway(IPermissionGateway):
     def update(self, user_id: int, permissions: Set[Permission]) -> None:
         self.connection.execute(
             "INSERT OR REPLACE INTO permissions (user_id, scopes) VALUES (?, ?)",
-            (user_id, json.dumps(list(permissions))),
+            (user_id, json.dumps([permission.value for permission in permissions])),
         )
         self.connection.commit()
 
