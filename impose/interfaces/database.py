@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod, abstractproperty
 from contextlib import contextmanager
 from typing import Iterator
 
-from .gateway import ITaskGateway, IImageGateway
+from .gateway import ITaskGateway, IImageGateway, IPermissionGateway
 
 
 class ISession(ABC):
@@ -12,6 +12,10 @@ class ISession(ABC):
 
     @abstractproperty
     def images(self) -> IImageGateway:
+        pass
+
+    @abstractproperty
+    def permissions(self) -> IPermissionGateway:
         pass
 
 
