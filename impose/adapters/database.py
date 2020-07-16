@@ -2,9 +2,9 @@ from sqlite3 import connect, Connection
 from contextlib import contextmanager
 from typing import Iterator
 
-from impose.adapters.gateway import TaskGateway, ImageGateway
+from impose.adapters.gateway import TaskGateway, ImageGateway, PermissionGateway
 from impose.interfaces import IDatabase, ISession
-from impose.interfaces.gateway import IImageGateway, ITaskGateway
+from impose.interfaces.gateway import IImageGateway, ITaskGateway, IPermissionGateway
 
 
 class Session(ISession):
@@ -12,6 +12,7 @@ class Session(ISession):
         self.connection = connection
         self._tasks = TaskGateway(self.connection)
         self._images = ImageGateway(self.connection)
+        self._perms = PermissionGateway(self.connection)
 
     @property
     def tasks(self) -> ITaskGateway:
@@ -20,6 +21,10 @@ class Session(ISession):
     @property
     def images(self) -> IImageGateway:
         return self._images
+
+    @property
+    def permissions(self) -> IPermissionGateway:
+        return self._perms
 
 
 class Database(IDatabase):
@@ -49,6 +54,14 @@ class Database(IDatabase):
             CREATE TABLE IF NOT EXISTS images (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
 	            image TEXT NOT NULL UNIQUE
+            );
+            """
+        )
+        connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS permissions (
+                user_id INTEGER PRIMARY KEY NOT NULL UNIQUE,
+	            scopes TEXT
             );
             """
         )

@@ -10,7 +10,8 @@ from impose.logger import LOGGER
 from concurrent.futures import CancelledError
 
 from impose.service import Service
-from impose.usecases import TaskHandler
+from impose.usecases.task import TaskHandler
+from impose.usecases.command import parse
 from impose.adapters import Database, Discord
 from impose.entities import Task
 
@@ -26,31 +27,26 @@ async def on_ready() -> None:
 
 @CLIENT.event
 async def on_message(message) -> None:
-    if message.author == CLIENT.user:
-        return
-    if message.author.id != 321292348187475969:  # Hardcoding ME as admin :D
-        return
-
     service = Service.get_instance()
 
-    cmd = message.content.split(" ")
-    if cmd[0] != "!impose":
+    if message.author == CLIENT.user:
         return
 
-    if cmd[1] == "start":
-        with service.db.create_session() as session:
-            TaskHandler(session, service.scheduler).add(
-                Task(
-                    channel_id=message.channel.id,
-                    times=cmd[2:] if len(cmd) > 2 else ["08:00"],
-                )
-            )
-        await message.channel.send(f"Registered for channel {message.channel}")
+    cmd = parse(message.content)
+    if cmd is None or not cmd.type in service.commands:
+        return
 
-    elif cmd[1] == "stop":
-        with service.db.create_session() as session:
-            TaskHandler(session, service.scheduler).remove(message.channel.id)
-        await message.channel.send(f"Unregistered {message.channel}")
+    LOGGER.info("Trying to execute %s for %d", cmd, message.author.id)
+
+    with service.db.create_session() as session:
+        command = service.commands[cmd.type]
+        permissions = session.permissions.get(message.author.id)
+
+        if not command.permission in permissions:
+            await service.discord.send(message.channel.id, "You don't have this privilege...")
+            return
+
+        await command.execute(message.author.id, message.channel.id, cmd.args)
 
 
 async def execute_scheduled_tasks() -> None:
