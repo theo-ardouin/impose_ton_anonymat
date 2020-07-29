@@ -1,12 +1,12 @@
 [Unit]
 Description=Impose ton anonymat
 After=network.target
-StartLimitIntervalSec=0
+StartLimitIntervalSec=120
 
 [Service]
 Type=simple
 Restart=always
-RestartSec=5
+RestartSec=20
 User=debian
 WorkingDirectory=/home/debian/bots/impose_ton_anonymat
 EnvironmentFile=/home/debian/bots/impose_ton_anonymat/infra/secrets
