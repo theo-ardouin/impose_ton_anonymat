@@ -2,15 +2,15 @@
 
 ## Environement
 
-`IMPOSE_TOKEN`: Discord token
-`PARENT_PATH`: The directory path of the images
+- `IMPOSE_TOKEN`: Discord token
+- `PARENT_PATH`: The directory path of the images
 
 ## Commands
 
-`!impose image`  
-`!impose start [TIME...]`  
-`!impose stop`
-`!impose test`
+- `!impose image`
+- `!impose start [TIME...]`
+- `!impose stop`
+- `!impose test`
 
 ## Scripts
 
