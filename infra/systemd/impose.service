@@ -8,9 +8,9 @@ Type=simple
 Restart=always
 RestartSec=20
 User=debian
-WorkingDirectory=REMOTE_PATH/impose_ton_anonymat
-EnvironmentFile=REMOTE_PATH/impose_ton_anonymat/infra/secrets
-ExecStart=REMOTE_PATH/impose_ton_anonymat/run.sh
+WorkingDirectory=REMOTE_PATH
+EnvironmentFile=REMOTE_PATH/infra/secrets
+ExecStart=REMOTE_PATH/run.sh
 
 [Install]
 WantedBy=multi-user.target
