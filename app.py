@@ -2,27 +2,25 @@ from __future__ import annotations
 
 import os
 import schedule
-import asyncio
 
 from discord import Client
-from typing import Optional, Sequence
+from discord.ext import tasks
 from impose.logger import LOGGER
 from concurrent.futures import CancelledError
 
 from impose.service import Service
 from impose.usecases.task import TaskHandler
 from impose.usecases.command import parse
-from impose.adapters import Database, Discord
-from impose.entities import Task
+from impose.adapters.database import Database
+from impose.adapters.discord import Discord
 
-
-IMPOSE_TOKEN = "IMPOSE_TOKEN"
 CLIENT = Client()
 
 
 @CLIENT.event
 async def on_ready() -> None:
     LOGGER.info(f"Logged-in as {Service.get_instance().discord.user}")
+    execute_scheduled_tasks.start()
 
 
 @CLIENT.event
@@ -49,30 +47,33 @@ async def on_message(message) -> None:
             return
 
         try:
-            await command.execute(message.author.id, message.channel.id, cmd.args)
+            output = await command.execute(message.author.id, message.channel.id, cmd.args)
+            if output:
+                await service.discord.send(message.channel.id, output)
+
         except Exception as err:
             LOGGER.exception(err)
+            await service.discord.send(message.channel.id, "Great job, something is broken!")
 
 
+@tasks.loop(seconds=0.5)
 async def execute_scheduled_tasks() -> None:
     try:
-        await CLIENT.wait_until_ready()
-        while True:
-            schedule.run_pending()
-            await asyncio.sleep(0.5)
+        schedule.run_pending()
     except CancelledError:
         pass
 
 
 if __name__ == "__main__":
+    token = os.environ["IMPOSE_TOKEN"]
+    parent_path = os.environ["PARENT_PATH"]
     try:
-        Service.INSTANCE = Service(Discord(CLIENT), Database())
+        Service.INSTANCE = Service(Discord(CLIENT), Database(), parent_path)
 
         service = Service.get_instance()
         with service.db.create_session() as session:
             TaskHandler(session, service.scheduler).register()
 
-        CLIENT.loop.create_task(execute_scheduled_tasks())
-        CLIENT.run(os.environ[IMPOSE_TOKEN])
+        CLIENT.run(token)
     except Exception as err:
         LOGGER.exception(err)

@@ -1,9 +1,10 @@
 import json
 from sqlite3 import Connection
-from typing import Any, Optional, Sequence
+from typing import Any
+from collections.abc import Sequence
 
 from impose.entities import Task, Cursor
-from impose.interfaces import ITaskGateway
+from impose.interfaces.gateway import ITaskGateway
 
 
 class TaskGateway(ITaskGateway):
@@ -28,7 +29,7 @@ class TaskGateway(ITaskGateway):
             )
         self.connection.commit()
 
-    def get(self, channel_id: int) -> Optional[Task]:
+    def get(self, channel_id: int) -> Task | None:
         row = (
             self.connection.cursor()
             .execute(
@@ -52,7 +53,7 @@ class TaskGateway(ITaskGateway):
         )
         self.connection.commit()
 
-    def get_cursor(self, channel_id: int) -> Optional[Cursor]:
+    def get_cursor(self, channel_id: int) -> Cursor | None:
         row = (
             self.connection.cursor()
             .execute(
@@ -63,9 +64,13 @@ class TaskGateway(ITaskGateway):
         )
         return Cursor(row[0]) if row else None
 
-    def set_cursor(self, channel_id: int, cursor: Optional[Cursor]) -> None:
+    def set_cursor(self, channel_id: int, cursor: Cursor | None) -> None:
         self.connection.execute(
-            "UPDATE tasks SET cursor = ? WHERE channel_id = ?", (cursor, channel_id,)
+            "UPDATE tasks SET cursor = ? WHERE channel_id = ?",
+            (
+                cursor,
+                channel_id,
+            ),
         )
         self.connection.commit()
 

@@ -1,7 +1,7 @@
 import asyncio
 import schedule
-from dataclasses import dataclass
-from typing import Any, Callable, Dict
+from typing import Any
+from collections.abc import Callable
 
 from impose.entities import Task
 
@@ -12,7 +12,7 @@ from .runner import TaskRunner
 class Scheduler:
     def __init__(self, context: Context) -> None:
         self.context = context
-        self.tasks: Dict[int, Task] = {}
+        self.tasks: dict[int, Task] = {}
 
     def add(self, task: Task) -> None:
         self.tasks[task.channel_id] = task

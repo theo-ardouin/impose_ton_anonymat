@@ -1,9 +1,10 @@
-from abc import ABC, abstractmethod, abstractproperty
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Sequence
+from collections.abc import Sequence
 
 from impose.entities import Permission
-from impose.interfaces import IDatabase, IDiscord
+from impose.interfaces.database import IDatabase
+from impose.interfaces.discord import IDiscord
 from impose.usecases.task import Scheduler
 
 
@@ -12,13 +13,17 @@ class Context:
     discord: IDiscord
     database: IDatabase
     scheduler: Scheduler
+    parent_path: str
 
 
 class ICommand(ABC):
-    @abstractproperty
+    @property
+    @abstractmethod
     def permission(self) -> Permission:
         pass
 
     @abstractmethod
-    async def execute(self, user_id: int, channel_id: int, args: Sequence[str]) -> None:
+    async def execute(
+        self, user_id: int, channel_id: int, args: Sequence[str]
+    ) -> str | None:
         pass

@@ -1,5 +1,5 @@
 SHELL			= /bin/bash
-PYTHON_VERSION	?= python3.7
+PYTHON_VERSION	?= python3.10
 
 .PHONY	= init clean deploy
 
@@ -13,5 +13,6 @@ clean:
 	rm -f impose.log
 
 deploy: ## Requires root
-	cp infra/systemd/impose.service /etc/systemd/system/
+	sed -e 's:REMOTE_PATH:${path}:g' infra/systemd/impose.service > /tmp/impose.service
+	cp /tmp/impose.service /etc/systemd/system/
 	systemctl enable impose.service

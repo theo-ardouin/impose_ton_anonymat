@@ -1,4 +1,4 @@
-from typing import Sequence
+from collections.abc import Sequence
 
 from impose.entities import Permission
 
@@ -13,16 +13,14 @@ class CommandPermission(ICommand):
     def permission(self) -> Permission:
         return Permission.WRITE_PERMISSION
 
-    async def execute(self, _: int, channel_id: int, args: Sequence[str]) -> None:
+    async def execute(
+        self, _: int, _channel_id: int, args: Sequence[str]
+    ) -> str | None:
         with self.context.database.create_session() as session:
             try:
                 session.permissions.update(
                     int(args[0]), {Permission(arg) for arg in args[1:]}
                 )
-                await self.context.discord.send(
-                    channel_id, "Permissions have been updated"
-                )
+                return "Permissions have been updated"
             except (IndexError, ValueError):
-                await self.context.discord.send(
-                    channel_id, "!impose perm <user_id> <scope...>"
-                )
+                return "!impose perm <user_id> <scope...>"

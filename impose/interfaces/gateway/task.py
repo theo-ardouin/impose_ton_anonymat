@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, Mapping, Optional, Sequence
+from collections.abc import Sequence
 
 from impose.entities import Cursor, Task
 
@@ -10,7 +10,7 @@ class ITaskGateway(ABC):
         pass
 
     @abstractmethod
-    def get(self, channel_id: int) -> Optional[Task]:
+    def get(self, channel_id: int) -> Task | None:
         pass
 
     @abstractmethod
@@ -22,9 +22,9 @@ class ITaskGateway(ABC):
         pass
 
     @abstractmethod
-    def get_cursor(self, channel_id: int) -> Optional[Cursor]:
+    def get_cursor(self, channel_id: int) -> Cursor | None:
         pass
 
     @abstractmethod
-    def set_cursor(self, channel_id: int, cursor: Optional[Cursor]) -> None:
+    def set_cursor(self, channel_id: int, cursor: Cursor | None) -> None:
         pass

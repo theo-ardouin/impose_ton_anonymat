@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 import sys
 
-from typing import Sequence
-from os import walk, path
+from collections.abc import Sequence
+from os import walk
 
-from impose.adapters import Database
+from impose.adapters.database import Database
 
 
 def is_image(filename: str) -> bool:
@@ -13,10 +13,10 @@ def is_image(filename: str) -> bool:
 
 def find_images(filepath: str) -> Sequence[str]:
     files = []
-    for (dirpath, dirnames, filenames) in walk(filepath):
+    for _dirpath, _dirname, filenames in walk(filepath):
         files.extend(
             [
-                path.realpath(path.join(dirpath, filename))
+                filename
                 for filename in filenames
                 if is_image(filename)
             ]

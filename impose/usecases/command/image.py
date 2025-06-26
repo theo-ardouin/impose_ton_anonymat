@@ -1,4 +1,4 @@
-from typing import Sequence
+from collections.abc import Sequence
 
 from impose.entities import Permission
 from impose.usecases.image import send_image
@@ -16,6 +16,9 @@ class CommandImage(ICommand):
 
     async def execute(
         self, _user_id: int, channel_id: int, _args: Sequence[str]
-    ) -> None:
+    ) -> str | None:
         with self.context.database.create_session() as session:
-            await send_image(session, self.context.discord, channel_id)
+            await send_image(
+                session, self.context.discord, channel_id, self.context.parent_path
+            )
+        return None

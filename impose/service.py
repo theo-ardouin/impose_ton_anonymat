@@ -1,32 +1,33 @@
 from __future__ import annotations
 
-from typing import Optional
-
 from impose.entities import CommandType
-from impose.interfaces import IDatabase, IDiscord
+from impose.interfaces.database import IDatabase
+from impose.interfaces.discord import IDiscord
 from impose.usecases.task import Scheduler, TaskContext
 from impose.usecases.command import (
     CommandImage,
     CommandStart,
     CommandStop,
+    CommandTest,
     CommandContext,
     CommandPermission,
 )
 
 
 class Service:
-    INSTANCE: Optional[Service] = None
+    INSTANCE: Service | None = None
 
-    def __init__(self, discord: IDiscord, db: IDatabase) -> None:
+    def __init__(self, discord: IDiscord, db: IDatabase, parent_path: str) -> None:
         self.discord = discord
         self.db = db
-        self.scheduler = Scheduler(TaskContext(discord, db))
-        ctxt = CommandContext(discord, db, self.scheduler)
+        self.scheduler = Scheduler(TaskContext(discord, db, parent_path))
+        ctxt = CommandContext(discord, db, self.scheduler, parent_path)
         self.commands = {
             CommandType.image: CommandImage(ctxt),
             CommandType.start: CommandStart(ctxt),
             CommandType.stop: CommandStop(ctxt),
             CommandType.permission: CommandPermission(ctxt),
+            CommandType.test: CommandTest(ctxt),
         }
 
     @classmethod

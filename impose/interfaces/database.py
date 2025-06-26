@@ -1,25 +1,29 @@
-from abc import ABC, abstractmethod, abstractproperty
+from abc import ABC, abstractmethod
 from contextlib import contextmanager
-from typing import Iterator
+from collections.abc import Iterator
 
 from .gateway import ITaskGateway, IImageGateway, IPermissionGateway
 
 
 class ISession(ABC):
-    @abstractproperty
+    @property
+    @abstractmethod
     def tasks(self) -> ITaskGateway:
         pass
 
-    @abstractproperty
+    @property
+    @abstractmethod
     def images(self) -> IImageGateway:
         pass
 
-    @abstractproperty
+    @property
+    @abstractmethod
     def permissions(self) -> IPermissionGateway:
         pass
 
 
 class IDatabase(ABC):
     @abstractmethod
+    @contextmanager
     def create_session(self) -> Iterator[ISession]:
         pass

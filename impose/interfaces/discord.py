@@ -1,8 +1,9 @@
-from abc import ABC, abstractmethod, abstractproperty
+from abc import ABC, abstractmethod
 
 
 class IDiscord(ABC):
-    @abstractproperty
+    @property
+    @abstractmethod
     def user(self) -> str:
         pass
 

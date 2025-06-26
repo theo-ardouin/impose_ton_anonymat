@@ -1,5 +1,5 @@
 from impose.entities import Task
-from impose.interfaces import ISession
+from impose.interfaces.database import ISession
 from impose.logger import LOGGER
 
 from .scheduler import Scheduler

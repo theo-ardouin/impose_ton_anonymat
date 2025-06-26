@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Optional, Sequence, Tuple
+from collections.abc import Sequence
 
 from impose.entities import Image, Cursor
 
@@ -14,7 +14,5 @@ class IImageGateway(ABC):
         pass
 
     @abstractmethod
-    def get_from_cursor(
-        self, cursor: Optional[Cursor]
-    ) -> Optional[Tuple[Image, Cursor]]:
+    def get_from_cursor(self, cursor: Cursor | None) -> tuple[Image, Cursor] | None:
         pass

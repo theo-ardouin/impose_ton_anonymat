@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import sys
 
-from impose.adapters import Database
+from impose.adapters.database import Database
 from impose.entities import Permission
 
 

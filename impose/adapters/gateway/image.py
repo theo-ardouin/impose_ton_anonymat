@@ -1,8 +1,8 @@
 from sqlite3 import Connection
-from typing import Optional, Sequence, Tuple
+from collections.abc import Sequence
 
 from impose.entities import Image, Cursor
-from impose.interfaces import IImageGateway
+from impose.interfaces.gateway import IImageGateway
 
 
 class ImageGateway(IImageGateway):
@@ -22,9 +22,7 @@ class ImageGateway(IImageGateway):
         )
         self.connection.commit()
 
-    def get_from_cursor(
-        self, cursor: Optional[Cursor]
-    ) -> Optional[Tuple[Image, Cursor]]:
+    def get_from_cursor(self, cursor: Cursor | None) -> tuple[Image, Cursor] | None:
         if cursor is None:
             row = (
                 self.connection.cursor()

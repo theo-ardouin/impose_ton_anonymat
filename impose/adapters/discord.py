@@ -1,6 +1,6 @@
 from discord import Client, File
 
-from impose.interfaces import IDiscord
+from impose.interfaces.discord import IDiscord
 
 
 class Discord(IDiscord):

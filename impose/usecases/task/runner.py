@@ -12,4 +12,9 @@ class TaskRunner:
 
     async def execute(self) -> None:
         with self.context.database.create_session() as session:
-            await send_image(session, self.context.discord, self.task.channel_id)
+            await send_image(
+                session,
+                self.context.discord,
+                self.task.channel_id,
+                self.context.parent_path,
+            )

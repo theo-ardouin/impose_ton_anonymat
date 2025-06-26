@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional, Sequence
+from collections.abc import Sequence
 
 from impose.entities import CommandType
 from impose.logger import LOGGER
@@ -11,12 +11,12 @@ class Command:
     args: Sequence[str]
 
 
-def parse(message: str) -> Optional[Command]:
+def parse(message: str) -> Command | None:
     try:
         args = message.split(" ")
         if args[0] != "!impose":
             return None
         return Command(type=CommandType(args[1]), args=args[2:])
     except (ValueError, IndexError):
-        LOGGER.warn("Invalid command: %s", message)
+        LOGGER.warning("Invalid command: %s", message)
         return None

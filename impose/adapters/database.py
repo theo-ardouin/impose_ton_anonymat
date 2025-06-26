@@ -1,10 +1,11 @@
 from sqlite3 import connect, Connection
 from contextlib import contextmanager
-from typing import Iterator
+from collections.abc import Iterator
 
 from impose.adapters.gateway import TaskGateway, ImageGateway, PermissionGateway
-from impose.interfaces import IDatabase, ISession
+from impose.interfaces.database import IDatabase, ISession
 from impose.interfaces.gateway import IImageGateway, ITaskGateway, IPermissionGateway
+from impose.logger import LOGGER
 
 
 class Session(ISession):
@@ -36,6 +37,10 @@ class Database(IDatabase):
             connection = connect(Database.FILENAME)
             self._write_tables(connection)
             yield Session(connection)
+            connection.commit()
+        except:
+            LOGGER.exception("Could not write into database")
+            connection.rollback()
         finally:
             connection.close()
 

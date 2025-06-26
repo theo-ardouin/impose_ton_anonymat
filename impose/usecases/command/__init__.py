@@ -4,3 +4,4 @@ from .stop import CommandStop
 from .permission import CommandPermission
 from .command import Context as CommandContext
 from .parser import parse
+from .test import CommandTest

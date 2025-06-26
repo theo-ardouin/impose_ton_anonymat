@@ -1,4 +1,4 @@
-from typing import Sequence
+from collections.abc import Sequence
 
 from impose.entities import Permission
 from impose.usecases.task import TaskHandler
@@ -16,8 +16,8 @@ class CommandStop(ICommand):
 
     async def execute(
         self, _user_id: int, channel_id: int, _args: Sequence[str]
-    ) -> None:
+    ) -> str | None:
         with self.context.database.create_session() as session:
             TaskHandler(session, self.context.scheduler).remove(channel_id)
 
-        await self.context.discord.send(channel_id, "Unregistered")
+        return "Unregistered"
