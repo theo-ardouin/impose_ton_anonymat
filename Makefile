@@ -7,7 +7,7 @@ init: venv
 	source venv/bin/activate && pip install -r requirements.txt
 
 venv:
-	virtualenv -p ${PYTHON_VERSION} venv
+	${PYTHON_VERSION} -m venv venv
 
 clean:
 	rm -f impose.log
