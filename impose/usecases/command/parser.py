@@ -1,8 +1,10 @@
+import logging
 from dataclasses import dataclass
 from collections.abc import Sequence
 
 from impose.entities import CommandType
-from impose.logger import LOGGER
+
+LOGGER = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)

@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import os
 import schedule
+import logging
 
 from discord import Client
 from discord.ext import tasks
-from impose.logger import LOGGER
+from impose.logger import init_global_logger
 from concurrent.futures import CancelledError
 
 from impose.service import Service
@@ -15,6 +16,7 @@ from impose.adapters.database import Database
 from impose.adapters.discord import Discord
 
 CLIENT = Client()
+LOGGER = logging.getLogger(__name__)
 
 
 @CLIENT.event
@@ -65,9 +67,10 @@ async def execute_scheduled_tasks() -> None:
 
 
 if __name__ == "__main__":
-    token = os.environ["IMPOSE_TOKEN"]
-    parent_path = os.environ["PARENT_PATH"]
     try:
+        init_global_logger(os.getenv("LOG_FILE"))
+        token = os.environ["IMPOSE_TOKEN"]
+        parent_path = os.environ["PARENT_PATH"]
         Service.INSTANCE = Service(Discord(CLIENT), Database(), parent_path)
 
         service = Service.get_instance()

@@ -1,3 +1,4 @@
+import logging
 from sqlite3 import connect, Connection
 from contextlib import contextmanager
 from collections.abc import Iterator
@@ -5,7 +6,8 @@ from collections.abc import Iterator
 from impose.adapters.gateway import TaskGateway, ImageGateway, PermissionGateway
 from impose.interfaces.database import IDatabase, ISession
 from impose.interfaces.gateway import IImageGateway, ITaskGateway, IPermissionGateway
-from impose.logger import LOGGER
+
+LOGGER = logging.getLogger(__name__)
 
 
 class Session(ISession):

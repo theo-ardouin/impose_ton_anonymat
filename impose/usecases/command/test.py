@@ -1,10 +1,12 @@
+import logging
 from collections.abc import Sequence
 
 from impose.entities import Image, Permission
 from impose.usecases.image import get_image_path
-from impose.logger import LOGGER
 
 from .command import Context, ICommand, Permission
+
+LOGGER = logging.getLogger(__name__)
 
 
 class CommandTest(ICommand):

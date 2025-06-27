@@ -1,9 +1,11 @@
+import logging
 from pathlib import Path
 
 from impose.entities import Image
 from impose.interfaces.database import ISession
 from impose.interfaces.discord import IDiscord
-from impose.logger import LOGGER
+
+LOGGER = logging.getLogger(__name__)
 
 
 def get_image_path(parent_path: str, image: Image) -> str:
