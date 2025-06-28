@@ -14,8 +14,9 @@
 
 ## Scripts
 
-`PYTHONPATH=$(pwd) ./scripts/dump.py <DIR>`  
-`PYTHONPATH=$(pwd) ./scripts/permissions.py <USER> <SCOPE...>`
+- `PYTHONPATH=$(pwd) ./scripts/dump.py <DIR>`
+- `PYTHONPATH=$(pwd) ./scripts/permissions.py <USER> <SCOPE...>`
+- `PYTHONPATH=$(pwd) PARENT_PATH=<asset-dir> ./scripts/remove_duplicates.py`
 
 ## Links
 

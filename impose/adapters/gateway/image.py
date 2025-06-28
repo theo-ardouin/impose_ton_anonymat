@@ -40,3 +40,17 @@ class ImageGateway(IImageGateway):
         if row is None:
             return None
         return Image(row[0]), Cursor(str(row[1]))
+
+    def get_all_images(self) -> Sequence[tuple[Image, Cursor]]:
+        items = (
+            self.connection.cursor()
+            .execute("SELECT image, id FROM images ORDER BY id")
+            .fetchall()
+        )
+        return [(Image(image), Cursor(str(id))) for image, id in items]
+
+    def delete_images(self, cursors: Sequence[Cursor]) -> None:
+        # Bad practice but can't be arsed to join the '?'
+        self.connection.cursor().execute(
+            f"DELETE FROM images WHERE id IN ({', '.join(cursors)})"
+        )
