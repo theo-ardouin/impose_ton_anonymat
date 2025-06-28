@@ -27,7 +27,6 @@ class TaskGateway(ITaskGateway):
                 "UPDATE tasks SET time = ? WHERE channel_id = ?",
                 (json.dumps(task.times), task.channel_id),
             )
-        self.connection.commit()
 
     def get(self, channel_id: int) -> Task | None:
         row = (
@@ -51,7 +50,6 @@ class TaskGateway(ITaskGateway):
         self.connection.execute(
             "UPDATE tasks SET time = NULL WHERE channel_id = ?", (channel_id,)
         )
-        self.connection.commit()
 
     def get_cursor(self, channel_id: int) -> Cursor | None:
         row = (
@@ -72,7 +70,6 @@ class TaskGateway(ITaskGateway):
                 channel_id,
             ),
         )
-        self.connection.commit()
 
     @staticmethod
     def _deserialize(row: Sequence[Any]) -> Task:

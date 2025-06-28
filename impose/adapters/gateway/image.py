@@ -13,14 +13,12 @@ class ImageGateway(IImageGateway):
         self.connection.execute(
             "INSERT OR IGNORE INTO images (image) VALUES (?)", (image,)
         )
-        self.connection.commit()
 
     def add_multiple(self, images: Sequence[Image]) -> None:
         self.connection.executemany(
             "INSERT OR IGNORE INTO images (image) VALUES (?)",
             [(image,) for image in images],
         )
-        self.connection.commit()
 
     def get_from_cursor(self, cursor: Cursor | None) -> tuple[Image, Cursor] | None:
         if cursor is None:
