@@ -11,7 +11,7 @@ if [ ! "$2" ]; then
 fi
 
 # Copy required files
-rsync -v -a -z -P --exclude ".*" --exclude "venv" * "${CONNECTION_STRING}:${REMOTE_PATH}"
+rsync -v -a -z -P --exclude-from=scripts/rsync_exclude.txt * "${CONNECTION_STRING}:${REMOTE_PATH}"
 
 # Run remotely
 ssh "${CONNECTION_STRING}" bash <<EOF
