@@ -5,7 +5,9 @@ def init_global_logger(file_path: str | None) -> None:
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
 
-    formatter = logging.Formatter("%(asctime)s [ %(levelname)s ] (%(name)s) %(message)s")
+    formatter = logging.Formatter(
+        "%(asctime)s [ %(levelname)s ] (%(name)s) %(message)s"
+    )
 
     if file_path:
         file_handler = logging.FileHandler(file_path)

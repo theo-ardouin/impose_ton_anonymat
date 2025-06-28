@@ -11,8 +11,9 @@ if __name__ == "__main__":
 
     with Database().create_session() as session:
         try:
-            session.permissions.update(int(sys.argv[1]), {
-                Permission(permission) for permission in sys.argv[2:]
-            })
+            session.permissions.update(
+                int(sys.argv[1]),
+                {Permission(permission) for permission in sys.argv[2:]},
+            )
         except Exception as err:
             print(err)

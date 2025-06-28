@@ -14,13 +14,7 @@ def is_image(filename: str) -> bool:
 def find_images(filepath: str) -> Sequence[str]:
     files = []
     for _dirpath, _dirname, filenames in walk(filepath):
-        files.extend(
-            [
-                filename
-                for filename in filenames
-                if is_image(filename)
-            ]
-        )
+        files.extend([filename for filename in filenames if is_image(filename)])
     return files
 
 
