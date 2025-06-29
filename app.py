@@ -14,6 +14,8 @@ from impose.usecases.task import TaskHandler
 from impose.usecases.command import parse
 from impose.adapters.database import Database
 from impose.adapters.discord import Discord
+from impose.adapters.scheduler import Scheduler
+from impose.usecases.task import TaskContext
 
 CLIENT = Client()
 LOGGER = logging.getLogger(__name__)
@@ -49,13 +51,17 @@ async def on_message(message) -> None:
             return
 
         try:
-            output = await command.execute(message.author.id, message.channel.id, cmd.args)
+            output = await command.execute(
+                message.author.id, message.channel.id, cmd.args
+            )
             if output:
                 await service.discord.send(message.channel.id, output)
 
         except Exception as err:
             LOGGER.exception(err)
-            await service.discord.send(message.channel.id, "Great job, something is broken!")
+            await service.discord.send(
+                message.channel.id, "Great job, something is broken!"
+            )
 
 
 @tasks.loop(seconds=0.5)
@@ -71,11 +77,15 @@ if __name__ == "__main__":
         init_global_logger(os.getenv("LOG_FILE"))
         token = os.environ["IMPOSE_TOKEN"]
         parent_path = os.environ["PARENT_PATH"]
-        Service.INSTANCE = Service(Discord(CLIENT), Database(), parent_path)
+
+        discord_client = Discord(CLIENT)
+        database = Database()
+        scheduler = Scheduler(TaskContext(discord_client, database, parent_path))
+        Service.INSTANCE = Service(discord_client, database, scheduler, parent_path)
 
         service = Service.get_instance()
         with service.db.create_session() as session:
-            TaskHandler(session, service.scheduler).register()
+            TaskHandler(session, scheduler).register()
 
         CLIENT.run(token)
     except Exception as err:

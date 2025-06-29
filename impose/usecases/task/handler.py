@@ -2,14 +2,13 @@ import logging
 
 from impose.entities import Task
 from impose.interfaces.database import ISession
-
-from .scheduler import Scheduler
+from impose.interfaces.scheduler import IScheduler
 
 LOGGER = logging.getLogger(__name__)
 
 
 class TaskHandler:
-    def __init__(self, session: ISession, scheduler: Scheduler) -> None:
+    def __init__(self, session: ISession, scheduler: IScheduler) -> None:
         self.session = session
         self.scheduler = scheduler
 
