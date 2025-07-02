@@ -133,3 +133,6 @@ database.db
 
 # Don't push API keys
 secrets
+
+# No assets
+assets/
